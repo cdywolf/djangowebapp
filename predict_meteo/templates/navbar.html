@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>LinkedIn-like Navbar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 50px;
+    background-color: #ffffff;
+    
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #0A66C2;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+.nav-links a {
+
+    display: flex;
+    align-items: center;
+    gap: 5px; /* space between the icon and the text */
+}
+
+
+.nav-links a:hover {
+    background-color: rgba(10, 102, 194, 0.1);
+}
+
+.nav-links .profile {
+    background-color: #0A66C2;
+    color: #ffffff;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.content {
+    padding: 20px 50px;
+}
+.navbar .logo img {
+    width: auto; 
+    height: 95%; 
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-left: -20px;  /* décale l'image de 10px vers la gauche */
+    margin-top: -18px;
+    
+}
+.navbar{
+    height:130px;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <img class="minister" src="{% static '/images/logo3d.png' %}" alt="Logo">
+        </a>
+        <div class="nav-links">
+            <a href="#"><i class="fas fa-plus"></i> Add users</a>
+          
+          
+          <a href="#" class="profile"><i class="fas fa-user"></i> Me ▼</a>
+      </div>
+    </nav>
+    
+    
+    
+</body>
+</html>

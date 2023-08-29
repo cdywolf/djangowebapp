@@ -1,0 +1,104 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 20px;
+    }
+    .info-box {
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .temp-box {
+        background-color: #f1f1f1;
+    }
+
+    .time-box {
+        background-color: #d1d1d1;
+    }
+    .send-email-button {
+        margin-top: 20px;
+    }
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+<!-- Conteneurs pour la température prédite et l'heure actuelle -->
+<div class="flex-container">
+    <div class="info-box temp-box">
+        <h3>Température prédite des 3h suivantes: <span id="predicted-value">{{ predicted_temperature }}</span> °C</h2>
+    </div>
+    <div class="info-box time-box">
+        <h3>Date et heure actuelles: <span id="time-value"></span></h3>
+    </div>
+</div>
+</br>
+<!-- Graphique de prédiction -->
+<h2>Graphique de prévision</h2>
+<img src="/static/images/prediction.png" alt="Graphique de prédiction">
+
+<!-- Bouton pour envoyer l'image par e-mail -->
+<div class="info-box">
+    <button type="button" class="btn btn-primary send-email-button" data-toggle="modal" data-target="#emailModal">Envoyer l'image par e-mail</button>
+</div>
+
+<!-- Fenêtre modale pour l'envoi d'e-mail -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailModalLabel">Envoyer par e-mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="email" id="emailInput" placeholder="Entrez votre e-mail" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary" onclick="sendEmail()">Envoyer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fonction pour mettre à jour l'heure et la date
+    function updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+        document.getElementById('time-value').innerText = timeString;
+    }
+
+    // Mettre à jour toutes les secondes
+    setInterval(updateTime, 1000);
+
+    // Fonction pour envoyer mail
+    function sendEmail() {
+        const email = document.getElementById('emailInput').value;
+        fetch('/send_email/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('E-mail envoyé avec succès.');
+            } else {
+                alert('Erreur lors de l\'envoi de l\'e-mail.');
+            }
+        });
+    }
+</script>
+{% endblock %}
